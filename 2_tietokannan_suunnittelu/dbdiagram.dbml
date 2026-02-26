@@ -1,0 +1,59 @@
+TABLE Users {
+  id INT [PRIMARY KEY]
+  username VARCHAR(255) [NOT NULL]
+  name VARCHAR(255) [NOT NULL]
+  passwordHash TEXT [NOT NULL]
+}
+
+TABLE Listings {
+  id INT [PRIMARY KEY]
+  owner INT [REF: - Users.id]
+  title TEXT [NOT NULL]
+  description TEXT
+  price REAL [NOT NULL]
+  state INT [NOT NULL, NOTE: "Represents the state of the listing"]
+}
+
+TABLE Favorites {
+  id INT [PRIMARY KEY]
+  user INT [REF: > Users.id]
+  listing INT [REF: > Listings.id]
+}
+
+TABLE Images {
+  id INT [PRIMARY KEY]
+  image TEXT [NOTE: "File path to the image or something"]
+  listing INT [REF: > Listings.id]
+}
+
+TABLE Categories {
+  id INT [PRIMARY KEY]
+  name VARCHAR(255) [NOT NULL]
+}
+
+TABLE Keywords {
+  id INT [PRIMARY KEY]
+  category INT [REF: - Categories.id]
+  listing INT [REF: <> Listings.id]
+}
+
+TABLE Conversations {
+  id INT [PRIMARY KEY]
+  listing INT [REF: < Listings.id]
+  asker INT [REF: < Users.id]
+}
+
+TABLE Messages {
+  id INT [PRIMARY KEY]
+  user INT [REF: > Users.id]
+  conversation INT [REF: > Conversations.id]
+  message TEXT [NOT NULL]
+}
+
+TABLE Feedback {
+  id INT [PRIMARY KEY]
+  conversation INT [REF: > Conversations.id, NOTE: "Once the listing is resolved/complete through the conversation, the conversation transfers to feedback mode"]
+  rating INT [NOT NULL]
+  feedback TEXT
+  role INT [NOTE: "Buyer / Seller", UNIQUE]
+}
