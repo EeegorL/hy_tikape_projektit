@@ -1,6 +1,6 @@
 Muutos- ja lisäysoperaatioissa oletetaan, että käyttäjä on kirjautunut järjestelmään, ja siten valtuutettu tekemään muutoksia. Syntyisi turhaa toistoa, jos asia mainittaisiin aina erikseen.
 
-Esim. tekstissä "Myyjä voi lisätä ilmoitukseensa asiasanoja..." oletetaan, että myyjä on tunnistettu ilmoituksen omistajaksi kirjautumistiedoista.
+Esim. tekstissä "Myyjä voi lisätä ilmoitu*kseensa* asiasanoja..." oletetaan, että myyjä on tunnistettu ilmoituksen omistajaksi kirjautumistiedoista.
 
 ## Käyttäjä voi kirjautua järjestelmään antamalla tunnuksen ja salasanan.
 
