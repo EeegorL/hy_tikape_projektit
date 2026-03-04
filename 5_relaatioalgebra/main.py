@@ -4,16 +4,22 @@ class Relation:
         self.rows = [];
 
     def __str__(self):
-        return str({x for x in self.rows});
+        return str({tuple(x.values()) for x in self.rows});
 
     def add_tuple(self, tup):
-        self.rows.append(tup);
+        if(len(self.fields)) == 1:
+            self.rows.append({self.fields: tup});
+        else:
+            self.rows.append({self.fields[i]: tup[i] for i in range(0, len(self.fields))})
 
-def projection(rel, tup):
-    indexes = [(rel.fields.index(tup))] if isinstance(tup, str) else [rel.fields.index(x) for x in tup];
+def projection(dict, keysTup):
+    if(isinstance(dict, Relation)): dict = dict.rows; # is an instance of Relation-class
+    return {tuple([row[key] for key in row.keys() if(key in keysTup)]) for row in dict};
 
-    return {tuple(row[i] for i in indexes) for row in rel.rows}
-
+def restriction(dict, key, val):
+    if(isinstance(dict, Relation)): dict = dict.rows; # is an instance of Relation-class
+    return tuple([x for x in dict if(x[key] == val)]);
+ 
 if(__name__ == "__main__"):
     products = Relation(("id", "name", "price"))
 
@@ -23,15 +29,13 @@ if(__name__ == "__main__"):
     products.add_tuple((4, "lanttu", 8))
     products.add_tuple((5, "selleri", 4))
 
-    # print(products)
+    print(products)
 
-    # print(projection(products, ("name")))
-    # print(projection(products, ("price")))
-    # print(projection(products, ("name", "price")))
+    print(projection(products, ("name")))
+    print(projection(products, ("price")))
+    print(projection(products, ("name", "price")))
 
-    # - toimii tähän asti -
+    print(restriction(products, "name", "porkkana"))
+    print(restriction(products, "price", 4))
 
-    # print(restriction(products, "name", "porkkana"))
-    # print(restriction(products, "price", 4))
-
-    # print(projection(restriction(products, "price", 4), ("name")))
+    print(projection(restriction(products, "price", 4), ("name")))
